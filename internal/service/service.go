@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/No1ball/todo-app/internal/models"
 	"github.com/No1ball/todo-app/internal/repository"
+	"github.com/No1ball/todo-app/internal/todo"
 )
 
 type Authorization interface {
@@ -12,6 +13,9 @@ type Authorization interface {
 }
 
 type TodoList interface {
+	Create(userId int, list todo.TodoList) (int, error)
+	GetAll(userId int) ([]todo.TodoList, error)
+	GetById(userId, id int) (todo.TodoList, error)
 }
 
 type TodoItem interface {
@@ -26,5 +30,6 @@ type Service struct {
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
+		TodoList:      NewTodoListService(repos.TodoList),
 	}
 }
