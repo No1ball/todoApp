@@ -1,5 +1,7 @@
 package todo
 
+import "errors"
+
 type TodoList struct {
 	Id          int    `json:"id" db:"id"`
 	Title       string `json:"title" db:"title" binding:"required"`
@@ -23,4 +25,16 @@ type ListsItem struct {
 	Id     int
 	ListId int
 	ItemId int
+}
+
+type UpdateListInput struct {
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+}
+
+func (u *UpdateListInput) Valid() error {
+	if u.Title == nil && u.Description == nil {
+		return errors.New("struct has no values for update")
+	}
+	return nil
 }
